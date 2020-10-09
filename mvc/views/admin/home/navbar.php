@@ -12,44 +12,72 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-sun"></i>
-          <span>Trang chủ</span></a>
-      </li>
+      
+      
+      <?php
+                $arr = array(
+                    'Admin' => array(
+                        'name' => 'Trang chủ',
+                        'icon' => 'sun'
+                    ),
+                    'Category' => array(
+                        'name' => 'Danh mục',
+                        'icon' => 'seedling'
+                    ),
+                    'Product' => array(
+                        'name' => 'Sản phẩm',
+                        'icon' => 'copy'
+                    ),
+                    'BlogAD' => array(
+                        'name' => 'Bài viết',
+                        'icon' => 'leaf'
+                    ),
+                    'Order' => array(
+                      'name' => 'Đơn hàng',
+                      'icon' => 'cart-plus'
+                    ),
+                    'Customer' => array(
+                      'name' => 'Khách hàng',
+                      'icon' => 'cat'
+                    )
+                    
+                );
+                // mảng $key => $value
 
-      <hr class="sidebar-divider my-0">
+                // Lấy $url để xét với vòng lặp phía dưới
+                $url = explode('/', $_GET['url']);
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-seedling"></i>
-          <span>Danh mục</span></a>
-      </li>
+                $url_active='';
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-carrot"></i>
-          <span>Sản phẩm</span></a>
-      </li>
+                if( isset($url[0]) ){
+                    $url_active = $url[0];
+                }
+            ?>
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-leaf"></i>
-          <span>Bài viết</span></a>
-      </li>
+            <?php foreach($arr as $key => $value){ 
+                
+                // Kiểm tra active
+                if( $key == $url_active ){
+                    $active = 'active';
+                }else{
+                    $active = '';
+                }
+                
+            ?>
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-cart-plus"></i>
-          <span>Đơn hàng</span></a>
-      </li>
+            <li class="nav-item ">
+                <a href="<?php echo URL.$key; ?>" class="nav-link <?php echo $active; ?>">
+                    <i class="nav-icon fas fa-<?php echo $value['icon']; ?>"></i>
+                    <span>
+                    <?php echo $value['name']; ?>
+                    </span>
+                </a>
+            </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-cat"></i>
-          <span>Khách hàng</span></a>
-      </li>
- 
+            <?php } ?>
+
+
+
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
