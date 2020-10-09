@@ -16,15 +16,16 @@
 
 </head>
 <body id="page-top">
- 
   <div id="wrapper">
 
   <?php require_once'home/navbar.php' ; ?>
 
+  <?php require_once'home/topbar.php' ; ?>
+  
   <?php require_once $data['main'].'.php';?>
 
   </div>
-
+ 
   <?php require_once'home/logout.php' ; ?>
   
   <?php require_once'home/js.php' ; ?>
