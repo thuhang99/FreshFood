@@ -16,6 +16,7 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
 
+<!-- CKEDITOR -->
 <script src="assets/admin/ckeditor/ckeditor.js"></script>
 <script>CKEDITOR.replace('contentB');</script>
 
@@ -25,7 +26,7 @@ function ChangeToSlug()
   var title, slug;
 
   //Lấy text từ thẻ input title 
-  title = document.getElementById("title").value;
+  title = document.getElementById("name").value;
 
   //Đổi chữ hoa thành chữ thường
   slug = title.toLowerCase();
@@ -54,4 +55,83 @@ function ChangeToSlug()
   //In slug ra textbox có id “slug”
   document.getElementById('link').value = slug;
 }
+</script>
+
+<!-- Kiểm tra dữ liệu bảng Category -->
+<script>
+  <?php
+  
+    $url = $_GET['url'];
+    $url = explode('/',$url);
+
+    if($url[0]=='Category')
+    {
+      if(isset($url[1]))
+      {
+        if($url[1]!='')
+        {
+
+  ?>
+
+          $(document).ready(function(){
+            $('#formCategory').on('submit', function(e){
+              // Tat load lai trang
+              e.preventDefault();
+              // Khai bao bien
+              var name, link, note, img, kt=1, err='';
+              // Lay du lieu
+              name = $('#name').val();
+              link = $('#link').val();
+              note = $('#note').val();
+              img = $('#img').val();
+              
+              var form = new FormData(this);
+              form.append('name', name);
+              form.append('link', link);
+              form.append('note', note);
+              form.append('img', img);
+
+              // thêm id
+              form.append('id', <?php echo (isset($url[2])) ? $url[2]:0; ?>);
+
+              // Kết quả
+              if(kt==1)
+              {
+                // Gửi ajax qua backend xử lý
+                $.ajax({
+                  // Đường dẫn
+                  url:'<?php echo URL; ?>Category/process_<?php echo $url[1]; ?>',
+                  type: 'POST',
+                  data: form,
+                  contentType: false,
+                  cache: false,
+                  processData: false,
+
+                  success: function(rs){
+                    if(rs=='ok'){
+                      window.location.href='<?php echo URL; ?>Category';
+                    } else if(rs=='ok-update'){
+                      alert('Đã cập nhật thành công!');
+                    } else {
+                      alert(rs);
+                    }
+                  }
+                });
+
+                return false;
+              }
+              else
+              {
+                alert(err);
+              }
+            });
+          });
+
+  <?php        
+        }
+      }
+    }
+  ?>
+
+  // ?>
 </script>

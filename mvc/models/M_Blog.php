@@ -5,7 +5,7 @@
 
         function insert($array)
         {
-            return $this->p_insert($this->table,$id);
+            // return $this->p_insert($this->table,$id);
         }
     }
 ?>
