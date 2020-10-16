@@ -32,7 +32,6 @@
                 $str_key .= $key.',';
                 $str_value .= "'".$value."'," ;
             }
-            
             $str_key = trim($str_key, ',');
             $str_value = trim($str_value, ',');
 

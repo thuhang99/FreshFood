@@ -3,9 +3,13 @@
 	{
 		function index()
 		{
+			$db = $this->load_models('M_Blog');
+			
 			$data['main'] = 'blog/main';
 
-			 $this->load_views('admin/index', $data);
+			$data['table'] = $db->select_table();
+
+			$this->load_views('admin/index', $data);
 		}
 
 		function add()
@@ -19,79 +23,90 @@
 
 		function process_add()
 		{
-			$title = $link = $contentB = $image = $err = $status ='';
+			$title = $link = $contentB = $img = '';
 
+			// Lay du lieu
 			$title = $_POST['title'];
 			$link = $_POST['link'];
 			$contentB = $_POST['contentB'];
-			$status = $_POST['status'];
-			
-			$flag = 1;
 
-			if(strlen($name)>100){
-                $flag=0;
-                $err.="Tên bài viết vượt quá số ký tự cho phép\n";
+			$kt=1;
+			$err = '';
+
+			// Kiem tra ten san pham
+			if(strlen($title) > 100)
+			{
+				$kt = 0;
+				$err .= "Tên sản phẩm vượt quá số ký tự cho phép.\n";
 			}
-			
-			if(strlen($link)>100){
-                $flag=0;
-                $err.="Link vượt quá số kí tự cho phép\n";
+
+			// Kiem tra link
+			if(strlen($link) > 100)
+			{
+				$kt = 0;
+				$err .= "Link vượt quá số ký tự cho phép.\n";
 			}
-			
-			if( $_FILES['image']['name']!='' )
-            {
-                $target_dir = 'uploads/blogs/';
-                $target_file = $target_dir . basename( $_FILES['image']['name'] );
 
-                $flag_uploads=1;
+			// Kiem tra ảnh
+			if($_FILES['img']['name'] != '')
+			{
+				$target_dir = 'uploads/blogs/';
+				$target_file = $target_dir.basename($_FILES['img']['name']);
 
-                $err_uploads = '';
+				// Kiem tra
+				$kt_uploads = 1;
+				$err_uploads = '';
 
-                if( file_exists($target_file) )
-                {
-                    $flag_uploads=0;
-                    $err_uploads = "File đã tồn tại\n";
-                }
+				// 1. Kiem tra ton tai hay chua
+				if(file_exists($target_file))
+				{
+					$kt_uploads = 0;
+					$err_uploads = "File đã tồn tại!\n";
+				}
 
-                $pattern = '/^(image\/jpeg)|(image\/png)$/';
-                $subject = $_FILES['image']['type'];
+				// 2. Kiem tra file đã đúng định dạng hay chưa
+				$duoi_mo_rong = '/^(image\/jpeg)|(image\/png)|(image\/jpg)$/';
+				$ten_file = $_FILES['img']['type'];
 
-                if( preg_match( $pattern, $subject ) == FALSE )
-                {
-                    $flag_uploads=0;
-                    $err_uploads = "File không đúng định dạng: .jpg, .png\n";
-                }
+				if(preg_match($duoi_mo_rong, $ten_file) == FALSE)
+				{
+					$kt_uploads = 0;
+					$err_uploads = "File không đúng định dạng: .jpeg; .png; .jpg!\n";
+				}
 
-                if( $_FILES['image']['size'] > 102400 ) // 100 KB
-                {
-                    $flag_uploads=0;
-                    $err_uploads = "File vượt quá dung lượng: 100KB\n";
-                }
+				// 3. Kiem tra size cua file
+				if($_FILES['img']['size'] > 1024000) // 100 KB
+				{
+					$kt_uploads = 0;
+					$err_uploads = "File vượt quá dung lượng lưu trữ!\n";
+				}
 
-                if( $flag_uploads==1 )
-                {
-                    move_uploaded_file( $_FILES['image']['tmp_name'], $target_file );
-                    $img = $_FILES['img']['name'];
-                }
-                else
-                {
-                    $err.="Ảnh chưa được tải lên\n".$err_uploads;
-                    $flag=0;
-                }
+				// Khong sai thi insert vao csdl
+				if($kt_uploads == 1)
+				{
+					move_uploaded_file($_FILES['img']['tmp_name'], $target_file);
+
+					$img = $_FILES['img']['name'];
+				}
+				else
+				{
+					$err .= "Ảnh chưa được tải lên\n".$err_uploads;
+					$kt = 0;
+				}
 			}
-			
-			if($flag==1)
+
+			// Ket qua
+			if($kt == 1)
 			{
 				$db = $this->load_models('M_Blog');
 
 				$array = [
-					'title' 	=> $title,
-					'link'  	=> $link,
-					'contentB'  => $contentB,
-					'image'		=> $image,
-					'status'	=> $status
+					'title' => $title,
+					'link' => $link,
+					'contentB' => $contentB,
+					'img' => $img
 				];
-						
+
 				$kq = $db->insert($array);
 
 				echo $kq;
@@ -100,6 +115,6 @@
 			{
 				echo $err;
 			}
-	}
+		}
 }
 ?>

@@ -55,3 +55,82 @@ function ChangeToSlug()
   document.getElementById('link').value = slug;
 }
 </script>
+<script>
+  <?php
+  
+    $url = $_GET['url'];
+    $url = explode('/',$url);
+
+    if($url[0]=='BlogAD')
+    {
+      if(isset($url[1]))
+      {
+        if($url[1]!='')
+        {
+
+  ?>
+
+          $(document).ready(function(){
+            $('#formBlog').on('submit', function(e){
+              // Tat load lai trang
+              e.preventDefault();
+              // Khai bao bien
+              var title, link, contentB, img, kt=1, err='';
+              // Lay du lieu
+              title = $('#title').val();
+              link = $('#link').val();
+              contentB = $('#contentB').val();
+              img = $('#img').val();
+              contentB = CKEDITOR.instances['contentB'].getData() 
+             
+              var form = new FormData(this);
+              form.append('title', title);
+              form.append('link', link);
+              form.append('contentB', contentB);
+              form.append('img', img);
+              form.append('contentB', contentB);
+
+              // thêm id
+              form.append('id', <?php echo (isset($url[2])) ? $url[2]:0; ?>);
+
+              // Kết quả
+              if(kt==1)
+              {
+                // Gửi ajax qua backend xử lý
+                $.ajax({
+                  // Đường dẫn
+                  url:'<?php echo URL; ?>BlogAD/process_<?php echo $url[1]; ?>',
+                  type: 'POST',
+                  data: form,
+                  contentType: false,
+                  cache: false,
+                  processData: false,
+
+                  success: function(rs){
+                    if(rs=='ok'){
+                      window.location.href='<?php echo URL; ?>BlogAD';
+                    } else if(rs=='ok-update'){
+                      alert('Đã cập nhật thành công!');
+                    } else {
+                      alert(rs);
+                    }
+                  }
+                });
+
+                return false;
+              }
+              else
+              {
+                alert(err);
+              }
+            });
+          });
+
+  <?php        
+        }
+      }
+    }
+  ?>
+
+  // ?>
+</script>

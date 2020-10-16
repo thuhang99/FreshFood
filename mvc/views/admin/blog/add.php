@@ -5,7 +5,7 @@
     </div>
 
     <div class="card-body">
-      <form method="POST" enctype="multipart/from-data">
+      <form role="form" id="formBlog"  method="POST" enctype="multipart/from-data">
 
             <div class="form-group">
                 <label for="title">Tiêu đề<span class="batbuoc">*</span></label>
@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label  for="image">Hình ảnh</label>
-                <input type="file" name="image" id="image">
+                <input type="file" name="img" id="img">
             </div>
            
             <div class="form-check">
