@@ -1,6 +1,6 @@
 <?php
     // Cấu hình đường link
-    define('URL', 'http://localhost:8080/FreshFood/');
+    define('URL', 'http://localhost:8181/FreshFood/');
 
     // Cấu hình Database
     define('SV', 'localhost');

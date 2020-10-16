@@ -26,7 +26,7 @@
                     ),
                     'Product' => array(
                         'name' => 'Sản phẩm',
-                        'icon' => 'copy'
+                        'icon' => 'carrot'
                     ),
                     'BlogAD' => array(
                         'name' => 'Bài viết',

@@ -10,7 +10,7 @@
   <meta name="author" content="">
 
   <title>Admin</title>
-  <base href="<?php echo URL;?>">
+  <base href="<?php echo URL; ?>">
 
   <?php require_once'home/css.php' ;?>
 
@@ -18,9 +18,9 @@
 <body id="page-top">
   <div id="wrapper">
 
-  <?php require_once'home/navbar.php' ; ?>
+  <?php require_once 'home/navbar.php' ; ?>
 
-  <?php require_once'home/topbar.php' ; ?>
+  <?php require_once 'home/topbar.php' ; ?>
   
   <?php require_once $data['main'].'.php';?>
 
